@@ -6,7 +6,7 @@ namespace CapSolver.Tasks;
 /// <summary>
 /// This task is used to solve GeeTest.
 /// </summary>
-public class GeeTestTask : ITask, ICookieTask
+public class GeeTestTask : ITask
 {
     [JsonProperty("type")]
     private string Type => "GeeTestTaskProxyLess";
@@ -43,23 +43,33 @@ public class GeeTestTask : ITask, ICookieTask
     public string? ApiServerSubdomain { get; set; }
 
     /// <summary>
+    /// Only Geetest V4 is optional. Risk type of the captcha, e.g. "slide".
+    /// </summary>
+    [JsonProperty("riskType", NullValueHandling = NullValueHandling.Ignore)]
+    public string? RiskType { get; set; }
+
+    /// <summary>
     /// Prepare a GeeTest task
     /// </summary>
     /// <param name="websiteUrl">Address of a webpage with Geetest</param>
     /// <param name="gt">The domain public key, rarely updated.</param>
     /// <param name="challenge">Changing token key. Make sure you grab a fresh one for each captcha; otherwise, you'll be charged for an error task.</param>
     /// <param name="apiServerSubdomain">Optional API subdomain. May be required for some implementations.</param>
+    /// <param name="captchaId">Only Geetest V4 is required.</param>
+    /// <param name="riskType">Only Geetest V4 is optional. Risk type of the captcha, e.g. "slide".</param>
     public GeeTestTask(string websiteUrl,
                        string? gt = null,
                        string? challenge = null,
                        string? apiServerSubdomain = null,
-                       string? captchaId = null)
+                       string? captchaId = null,
+                       string? riskType = null)
     {
         WebsiteURL = websiteUrl;
         Gt = gt;
         Challenge = challenge;
         ApiServerSubdomain = apiServerSubdomain;
         CaptchaId = captchaId;
+        RiskType = riskType;
 
         if (gt != null && challenge != null)
         {

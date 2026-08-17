@@ -14,4 +14,22 @@ public class ReCaptchaV2Response : ITaskResponse
 
     [JsonProperty("expireTime")]
     public long ExpireTime { get; set; }
+
+    [JsonProperty("secChUa")]
+    public string? SecChUa { get; set; }
+
+    [JsonProperty("createTime")]
+    public long? CreateTime { get; set; }
+
+    /// <summary>
+    /// Returned when isSession is enabled on a v3 task. Used as a cookie.
+    /// </summary>
+    [JsonProperty("recaptcha-ca-t")]
+    public string? RecaptchaCaT { get; set; }
+
+    /// <summary>
+    /// Automatically returned by some v2 websites. Used as a cookie.
+    /// </summary>
+    [JsonProperty("recaptcha-ca-e")]
+    public string? RecaptchaCaE { get; set; }
 }

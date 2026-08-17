@@ -39,19 +39,19 @@ public class VisionEngineClassificationTask : ITask
     public string? WebsiteUrl { get; set; }
   
     /// <summary>
-    /// space_detection requires
+    /// Only the shein model requires
     /// </summary>
     [JsonProperty("question")]
     public string? Question { get; set; }
 
     /// <summary>
-    /// Prepare a HCaptchaClassification task.
+    /// Prepare a VisionEngine task.
     /// </summary>
-    /// <param name="module">See supported images types: <seealso href="https://docs.capsolver.com/guide/recognition/VisionEngine.html#support-img-types">click here</seealso></param>
+    /// <param name="module">See supported images types: <seealso href="https://docs.capsolver.com/en/guide/recognition/VisionEngine/">click here</seealso></param>
     /// <param name="image">Base64 encoded content of the image (no newlines, no data:image/***;charset=utf-8;base64,)</param>
     /// <param name="imageBackground">Base64 encoded content of the background image (no newlines, no data:image/***;charset=utf-8;base64,)</param>
-    /// <param name="question">Page source url to improve accuracy</param>
-    /// <param name="websiteUrl">space_detection requires</param>
+    /// <param name="websiteUrl">Page source url to improve accuracy</param>
+    /// <param name="question">Only the shein model requires</param>
     public VisionEngineClassificationTask(string module,
                                           string image,
                                           string imageBackground,

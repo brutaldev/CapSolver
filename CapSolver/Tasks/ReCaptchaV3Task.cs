@@ -24,7 +24,7 @@ public class ReCaptchaV3Task : ITask, IProxyTask, IUserAgentTask, ICookieTask
     [JsonRequired]
     [JsonProperty("websiteKey")]
     public string WebsiteKey { get; set; }
-    
+
     /// <summary>
     /// Widget action value. Website owner defines what user is doing on the page through this parameter. Default value: verify
     /// </summary>
@@ -63,6 +63,12 @@ public class ReCaptchaV3Task : ITask, IProxyTask, IUserAgentTask, ICookieTask
     public string? ApiDomain { get; set; }
 
     /// <summary>
+    /// Session mode. When enabled, returns a recaptcha-ca-t value which is used as a cookie.
+    /// </summary>
+    [JsonProperty("isSession", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? IsSession { get; set; }
+
+    /// <summary>
     /// Prepare a ReCaptchaV3 task.
     /// </summary>
     /// <param name="websiteUrl">Address of a webpage with Google ReCaptcha </param>
@@ -71,6 +77,7 @@ public class ReCaptchaV3Task : ITask, IProxyTask, IUserAgentTask, ICookieTask
     /// <param name="minimumScore">Value from 0.1 to 0.9</param>
     /// <param name="cookies">Additional cookies which we must use during interaction with target page or Google.</param>
     /// <param name="userAgent">Browser's User-Agent which is used in emulation.</param>
+    /// <param name="isSession">Session mode. When enabled, returns a recaptcha-ca-t value which is used as a cookie.</param>
     public ReCaptchaV3Task(string websiteUrl,
                            string websiteKey,
                            string pageAction = "verify",
@@ -78,7 +85,8 @@ public class ReCaptchaV3Task : ITask, IProxyTask, IUserAgentTask, ICookieTask
                            string? cookies = null,
                            string? userAgent = null,
                            object? enterprisePayload = null,
-                           string? apiDomain = null)
+                           string? apiDomain = null,
+                           bool? isSession = null)
     {
         WebsiteKey = websiteKey;
         WebsiteUrl = websiteUrl;
@@ -88,6 +96,7 @@ public class ReCaptchaV3Task : ITask, IProxyTask, IUserAgentTask, ICookieTask
         EnterprisePayload = enterprisePayload;
         ApiDomain = apiDomain;
         Cookies = cookies;
+        IsSession = isSession;
 
         if (enterprisePayload != null)
         {

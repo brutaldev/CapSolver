@@ -55,6 +55,12 @@ public class ReCaptchaV2EnterpriseTask : ITask, IProxyTask, IUserAgentTask, ICoo
     public string? Cookies { get; set; }
 
     /// <summary>
+    /// For ReCaptchaV2, if there is an "sa" parameter in the payload of the /anchor endpoint, submit its value.
+    /// </summary>
+    [JsonProperty("pageAction", NullValueHandling = NullValueHandling.Ignore)]
+    public string? PageAction { get; set; }
+
+    /// <summary>
     /// Prepare a ReCaptchaV2 Enterprise task.
     /// </summary>
     /// <param name="websiteUrl">Address of a webpage with Google ReCaptcha</param>
@@ -65,12 +71,14 @@ public class ReCaptchaV2EnterpriseTask : ITask, IProxyTask, IUserAgentTask, ICoo
     /// <param name="apiDomain">Domain address from which to load reCAPTCHA Enterprise. </param>
     /// <param name="cookies">Additional cookies which we must use during interaction with target page or Google.</param>
     /// <param name="userAgent">Browser's User-Agent which is used in emulation.</param>
+    /// <param name="pageAction">If there is an "sa" parameter in the payload of the /anchor endpoint, submit its value.</param>
     public ReCaptchaV2EnterpriseTask(string websiteUrl,
                                  string websiteKey,
                                  object? enterprisePayload = null,
                                  string? apiDomain = null,
                                  string? userAgent = null,
-                                 string? cookies = null)
+                                 string? cookies = null,
+                                 string? pageAction = null)
     {
         WebsiteUrl = websiteUrl;
         WebsiteKey = websiteKey;
@@ -78,5 +86,6 @@ public class ReCaptchaV2EnterpriseTask : ITask, IProxyTask, IUserAgentTask, ICoo
         ApiDomain = apiDomain;
         UserAgent = userAgent;
         Cookies = cookies;
+        PageAction = pageAction;
     }
 }

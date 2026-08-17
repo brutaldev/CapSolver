@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using CapSolver.Utilities;
+using Newtonsoft.Json;
 
 namespace CapSolver.Models.Responses;
 
-public class GeeTestV4Response
+public class GeeTestV4Response : ITaskResponse
 {
     [JsonProperty("captcha_id")]
     public string? CaptchaId { get; set; }

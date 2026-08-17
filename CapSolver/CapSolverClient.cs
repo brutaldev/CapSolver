@@ -10,8 +10,8 @@ namespace CapSolver;
 public class CapSolverClient
 {
     private readonly HttpClient _httpClient;
-    private static readonly Uri HostUrl = new Uri("https://api.capsolver.com");
-    private static readonly Uri BetaHostUrl = new Uri("https://api-beta.capsolver.com");
+    private static readonly Uri HostUrl = new("https://api.capsolver.com");
+    private static readonly Uri BetaHostUrl = new("https://api-beta.capsolver.com");
     private readonly string _clientKey;
     private Proxy? _proxy;
 
@@ -69,9 +69,27 @@ public class CapSolverClient
 
     public async Task<string> CreateTask(ITask task)
     {
+        if (task is (DatadomeSliderTask or AntiCloudflareTask) && !IsProxyActive())
+            throw new CapSolverException(13, "PROXY_NEEDED", $"{task.GetType().Name} requires your own proxies.");
+
+        var data = BuildTaskPayload(task);
+        var r = await CheckResponse<CreateTaskResponse>(await MakeRequest(Endpoints.CreateTask, data));
+        return r.TaskId;
+    }
+
+    /// <summary>
+    /// Create the task and receive its solution directly, without a separate getTaskResult poll.
+    /// </summary>
+    public async Task<T> GetToken<T>(ITask task) where T : ITaskResponse
+    {
+        var data = BuildTaskPayload(task);
+        var r = await CheckResponse<TaskResponse<T>>(await MakeRequest(Endpoints.GetToken, data));
+        return r.Solution!;
+    }
+
+    private string BuildTaskPayload(ITask task)
+    {
         var t = new VanillaTask(_clientKey);
-        t.UseAppId();
-        string data;
         switch (task)
         {
             case IProxyTask when IsProxyActive():
@@ -81,8 +99,7 @@ public class CapSolverClient
                 var p = JObject.FromObject(_proxy!);
                 p.Merge(to);
                 vt["task"] = p;
-                data = vt.ToString();
-                break;
+                return vt.ToString();
             }
             case IProxyTask when !IsProxyActive():
             {
@@ -90,24 +107,16 @@ public class CapSolverClient
                 var to = JObject.FromObject(task);
                 to["type"] += "ProxyLess";
                 vt["task"] = to;
-                data = vt.ToString();
-                break;
+                return vt.ToString();
             }
             default:
             {
                 var vt = JObject.FromObject(t);
                 var to = JObject.FromObject(task);
                 vt["task"] = to;
-                data = vt.ToString();
-                break;
+                return vt.ToString();
             }
         }
-
-        if (task is DatadomeSliderTask && !IsProxyActive())
-            throw new CapSolverException(13, "PROXY_NEEDED", "DatadomeSliderTask requires your own proxies.");
-
-        var r = await CheckResponse<CreateTaskResponse>(await MakeRequest(Endpoints.CreateTask, data));
-        return r.TaskId;
     }
 
     public bool IsProxyActive() => _proxy != null;

@@ -6,7 +6,7 @@ namespace CapSolver.Tasks;
 public class AntiTurnstileTask : ITask
 {
     [JsonProperty("type")]
-    private string Type => "AntiTurnstileTaskProxyLess";
+    private static string Type => "AntiTurnstileTaskProxyLess";
 
     /// <summary>
     /// The address of the target page.

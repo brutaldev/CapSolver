@@ -12,4 +12,10 @@ public class GeeTestResponse : ITaskResponse
     [JsonRequired]
     [JsonProperty("validate")]
     public string Validate { get; set; } = null!;
+
+    [JsonProperty("seccode")]
+    public string? SecCode { get; set; }
+
+    [JsonProperty("userAgent")]
+    public string? UserAgent { get; set; }
 }

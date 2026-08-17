@@ -12,7 +12,7 @@ public class ImageToTextTask : ITask
     /// Task's type.
     /// </summary>
     [JsonProperty("type")]
-    private string Type => "ImageToTextTask";
+    private static string Type => "ImageToTextTask";
 
     /// <summary>
     /// Page source url to improve accuracy
@@ -27,9 +27,15 @@ public class ImageToTextTask : ITask
     public string Body { get; set; }
 
     /// <summary>
+    /// Only for the "number" module. Support up to 9 base64 encoded images each time.
+    /// </summary>
+    [JsonProperty("images", NullValueHandling = NullValueHandling.Ignore)]
+    public IList<string>? Images { get; set; }
+
+    /// <summary>
     /// Specifies the module.
     /// <br />
-    /// See independent module support list: <seealso href="https://docs.capsolver.com/guide/recognition/ImageToTextTask.html#independent-module-support">click here</seealso>
+    /// See independent module support list: <seealso href="https://docs.capsolver.com/en/guide/recognition/ImageToTextTask/">click here</seealso>
     /// </summary>
     [JsonProperty("module")]
     public string? Module { get; set; }
@@ -42,20 +48,15 @@ public class ImageToTextTask : ITask
     public float? Score { get; set; }
 
     /// <summary>
-    /// Case sensitive or not
-    /// </summary>
-    [JsonProperty("case")]
-    public bool? Case { get; set; }
-
-    /// <summary>
     /// Prepare an image to text task.
     /// </summary>
     /// <param name="body">Base64 encoded content of the image (without line breaks)</param>
-    public ImageToTextTask(string body, string? module = null, float? score = null, bool? caseSensitive = null)
+    /// <param name="images">Only for the "number" module. Support up to 9 base64 encoded images each time.</param>
+    public ImageToTextTask(string body, string? module = null, float? score = null, IList<string>? images = null)
     {
         Body = body;
         Module = module;
         Score = score;
-        Case = caseSensitive;
+        Images = images;
     }
 }

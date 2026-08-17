@@ -6,31 +6,30 @@
 ### Installation
 via Package Manager:
 ```
-NuGet\Install-Package CapSolver -Version 2.0.0
+NuGet\Install-Package CapSolver -Version 2.0.1
 ```
 This command is intended to be used within the Package Manager Console in Visual Studio, as it uses the NuGet module's version of Install-Package.
 
 via .NET CLI:
 ```ssh
-dotnet add package CapSolver --version 2.0.0
+dotnet add package CapSolver --version 2.0.1
 ```
 
 via adding PackageReference:
 ```xml
-<PackageReference Include="CapSolver" Version="2.0.0" />
+<PackageReference Include="CapSolver" Version="2.0.1" />
 ```
 For projects that support PackageReference, copy this XML node into the project file to reference the package.
 
 ### Supported Captcha Types
 - Image To Text
-- ReCaptcha V2
+- ReCaptcha V2 / V2 Enterprise
 - ReCaptcha V2 Classification
 - ReCaptcha V3
-- HCaptcha
-- HCaptcha Classification
 - GeeTest V3 / V4
 - Datadome Slider / Interstitial
-- Anti Turnstile / Cloudflare
+- Anti Turnstile / Cloudflare Turnstile
+- Cloudflare Challenge
 - MTCaptcha
 - AWS WAF Captcha
 - AWS WAF Classification
@@ -60,12 +59,12 @@ string id = await client.CreateTask(task);
 var response = await client.JoinTaskResult<ReCaptchaV2Response>(id);
 ```
 
-#### FunCaptcha Task
+#### Anti Turnstile Task
 ```csharp
 var client = new CapSolverClient("apikey", false);
-var task = new HCaptchaTask("hcaptcha-site", "hcaptcha-key");
+var task = new AntiTurnstileTask("turnstile-site", "turnstile-key");
 string id = await client.CreateTask(task);
-var response = await client.JoinTaskResult<HCaptchaResponse>(id);
+var response = await client.JoinTaskResult<AntiTurnstileResponse>(id);
 ```
 
 For other examples and api documentation please visit [wiki](https://captchaai.atlassian.net/wiki/spaces/CAPTCHAAI/overview)

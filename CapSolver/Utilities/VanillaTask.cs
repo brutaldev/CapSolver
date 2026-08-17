@@ -25,6 +25,4 @@ public class VanillaTask
         Task = task;
         ClientKey = clientKey;
     }
-
-    public void UseAppId() => AppId = "E2C4EB50-89C3-4F7E-AE67-F92D2F36C4FF";
 }
